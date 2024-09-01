@@ -6,8 +6,10 @@ import com.springboot.springbootsecurity.common.model.dto.response.CustomRespons
 import com.springboot.springbootsecurity.customer.model.Customer;
 import com.springboot.springbootsecurity.customer.model.dto.request.CustomerCreateRequest;
 import com.springboot.springbootsecurity.customer.model.dto.request.CustomerPagingRequest;
+import com.springboot.springbootsecurity.customer.model.dto.request.CustomerSearchRequest;
 import com.springboot.springbootsecurity.customer.model.dto.request.CustomerUpdateRequest;
 import com.springboot.springbootsecurity.customer.model.dto.response.CustomerResponse;
+import com.springboot.springbootsecurity.customer.model.dto.response.CustomerSearchResponse;
 import com.springboot.springbootsecurity.customer.model.mapper.CustomPageToCustomPagingResponseMapper;
 import com.springboot.springbootsecurity.customer.model.mapper.CustomerToCustomerResponseMapper;
 import com.springboot.springbootsecurity.customer.service.CustomerCreateService;
@@ -20,6 +22,8 @@ import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -92,5 +96,9 @@ public class CustomerController {
         customerDeleteService.deleteCustomerById(customerId);
         return CustomResponse.SUCCESS;
     }
-
+    @PostMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public List<CustomerSearchResponse> searchCustomers(@RequestBody @Valid final CustomerSearchRequest searchRequest) {
+        return customerReadService.searchCustomers(searchRequest);
+    }
 }

@@ -42,9 +42,7 @@ public class CustomerUpdateServiceImpl implements CustomerUpdateService {
     }
 
     private void checkCustomerIdNumberUniqueness(final String customerIdNumber) {
-        if (customerRepository.existsCustomerEntityByfirstname(customerIdNumber)) {
-            throw new CustomerAlreadyExistException("With given product customerIdNumber = " + customerIdNumber);
-        }
+
     }
 
 }

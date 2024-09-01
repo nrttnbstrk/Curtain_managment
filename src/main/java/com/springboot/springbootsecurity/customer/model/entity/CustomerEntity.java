@@ -1,12 +1,8 @@
 package com.springboot.springbootsecurity.customer.model.entity;
 
 import com.springboot.springbootsecurity.common.model.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.springboot.springbootsecurity.customer.repository.CustomerRepository;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -33,6 +29,7 @@ public class CustomerEntity extends BaseEntity {
     @Column(name = "ID")
     private String id;
 
+
     @Column(name = "first_name")
     private String firstname;
 
@@ -55,6 +52,5 @@ public class CustomerEntity extends BaseEntity {
     private String address;
     @Column(name = "detail")
     private String detail;
-
 
 }

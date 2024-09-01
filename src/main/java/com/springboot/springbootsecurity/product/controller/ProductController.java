@@ -3,11 +3,15 @@ package com.springboot.springbootsecurity.product.controller;
 import com.springboot.springbootsecurity.common.model.CustomPage;
 import com.springboot.springbootsecurity.common.model.dto.response.CustomPagingResponse;
 import com.springboot.springbootsecurity.common.model.dto.response.CustomResponse;
+import com.springboot.springbootsecurity.customer.model.dto.request.CustomerSearchRequest;
+import com.springboot.springbootsecurity.customer.model.dto.response.CustomerSearchResponse;
 import com.springboot.springbootsecurity.product.model.Product;
 import com.springboot.springbootsecurity.product.model.dto.request.ProductCreateRequest;
 import com.springboot.springbootsecurity.product.model.dto.request.ProductPagingRequest;
+import com.springboot.springbootsecurity.product.model.dto.request.ProductSearchRequest;
 import com.springboot.springbootsecurity.product.model.dto.request.ProductUpdateRequest;
 import com.springboot.springbootsecurity.product.model.dto.response.ProductResponse;
+import com.springboot.springbootsecurity.product.model.dto.response.ProductSearchResponse;
 import com.springboot.springbootsecurity.product.model.mapper.CustomPageToCustomPagingResponseMapper;
 import com.springboot.springbootsecurity.product.model.mapper.ProductToProductResponseMapper;
 import com.springboot.springbootsecurity.product.service.ProductCreateService;
@@ -20,6 +24,8 @@ import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -59,7 +65,7 @@ public class ProductController {
 
     }
 
-    @GetMapping
+    @PostMapping("/allproduct")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CustomResponse<CustomPagingResponse<ProductResponse>> getProducts(
             @RequestBody @Valid final ProductPagingRequest productPagingRequest) {
@@ -93,5 +99,9 @@ public class ProductController {
         productDeleteService.deleteProductById(productId);
         return CustomResponse.SUCCESS;
     }
-
+    @PostMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public List<ProductSearchResponse> searchProduct(@RequestBody @Valid final ProductSearchRequest searchRequest) {
+        return productReadService.SearchProducts(searchRequest);
+    }
 }

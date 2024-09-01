@@ -36,9 +36,7 @@ public class CustomerCreateServiceImpl implements CustomerCreateService {
     }
 
     private void checkUniquenessIdNumber(final String id_number) {
-        if (customerRepository.existsCustomerEntityByfirstname(id_number)) {
-            throw new CustomerAlreadyExistException("There is another customer with id number: " + id_number);
-        }
+
     }
 
 }
