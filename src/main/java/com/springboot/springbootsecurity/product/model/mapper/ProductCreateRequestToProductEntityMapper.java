@@ -18,10 +18,8 @@ public interface ProductCreateRequestToProductEntityMapper extends BaseMapper<Pr
                 .code(productCreateRequest.getCode())
                 .barcode(productCreateRequest.getBarcode())
                 .unitType(productCreateRequest.getUnitType())  // Birim tipini ekleyin
-                .initialStockQuantity(productCreateRequest.getInitialStockQuantity())  // Giriş stok adedini ekleyin
                 .purchasePrice(productCreateRequest.getPurchasePrice())  // Alış fiyatını ekleyin
                 .sellingPrice(productCreateRequest.getSellingPrice())  // Satış fiyatını ekleyin
-                .vatRate(productCreateRequest.getVatRate())  // KDV oranını ekleyin
                 .supplier(productCreateRequest.getSupplier())  // Tedarikçiyi ekleyin
                 .build();
     }

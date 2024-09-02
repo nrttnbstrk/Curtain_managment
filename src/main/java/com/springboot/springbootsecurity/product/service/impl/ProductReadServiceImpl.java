@@ -1,7 +1,6 @@
 package com.springboot.springbootsecurity.product.service.impl;
 
 import com.springboot.springbootsecurity.common.model.CustomPage;
-import com.springboot.springbootsecurity.customer.model.entity.CustomerEntity;
 import com.springboot.springbootsecurity.product.model.dto.request.ProductSearchRequest;
 import com.springboot.springbootsecurity.product.model.dto.response.ProductSearchResponse;
 import com.springboot.springbootsecurity.product.model.entity.ProductEntity;
@@ -74,7 +73,7 @@ public class ProductReadServiceImpl implements ProductReadService {
             specification = specification.and(ProductSpecification.hasBarcode(searchRequest.getBarcode()));
         }
         if (searchRequest.getSupplier() != null && !searchRequest.getSupplier().isEmpty()) {
-            specification = specification.and(ProductSpecification.hasBrand(searchRequest.getSupplier()));
+            specification = specification.and(ProductSpecification.hasSupplier(searchRequest.getSupplier()));
         }
 
         List<ProductEntity> productEntities = productRepository.findAll(specification);

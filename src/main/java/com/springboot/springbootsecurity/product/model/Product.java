@@ -25,9 +25,8 @@ public class Product extends BaseDomainModel {
     private String code;
     private String barcode;
     private String unitType;  // Birim tipi
-    private BigDecimal initialStockQuantity;  // Giriş stok adedi
+    private BigDecimal totalAmount;  // Giriş stok adedi
     private BigDecimal purchasePrice;  // Alış fiyatı
     private BigDecimal sellingPrice;  // Satış fiyatı
-    private BigDecimal vatRate;  // KDV oranı
     private String supplier;  // Tedarikçi
 }

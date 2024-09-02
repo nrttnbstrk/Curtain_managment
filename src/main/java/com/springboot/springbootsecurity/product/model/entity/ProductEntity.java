@@ -45,11 +45,11 @@ public class ProductEntity extends BaseEntity {
     private String unitType;  // Birim tipi
 
     @Column(
-            name = "INITIAL_STOCK_QUANTITY",
+            name = "TOTAL_AMOUNT",
             precision = 24,
             scale = 4
     )
-    private BigDecimal initialStockQuantity;  // Giriş stok adedi
+    private BigDecimal totalAmount;  // Giriş stok adedi
 
     @Column(
             name = "PURCHASE_PRICE",

@@ -15,15 +15,12 @@ public interface ProductUpdateRequestToProductEntityMapper extends BaseMapper<Pr
     default void mapForUpdating(ProductEntity productEntityToBeUpdate, ProductUpdateRequest productUpdateRequest) {
 
         productEntityToBeUpdate.setName(productUpdateRequest.getName());
-        productEntityToBeUpdate.setInitialStockQuantity(productUpdateRequest.getInitialStockQuantity());
         productEntityToBeUpdate.setUnitType(productUpdateRequest.getUnitType());
         productEntityToBeUpdate.setBrand(productUpdateRequest.getBrand());
         productEntityToBeUpdate.setCode(productUpdateRequest.getCode());
         productEntityToBeUpdate.setBarcode(productEntityToBeUpdate.getBarcode());
-        productEntityToBeUpdate.setInitialStockQuantity(productUpdateRequest.getInitialStockQuantity());
         productEntityToBeUpdate.setPurchasePrice(productUpdateRequest.getPurchasePrice());
         productEntityToBeUpdate.setSellingPrice(productUpdateRequest.getSellingPrice());
-        productEntityToBeUpdate.setVatRate(productUpdateRequest.getVatRate());
         productEntityToBeUpdate.setSupplier(productUpdateRequest.getSupplier());
     }
 

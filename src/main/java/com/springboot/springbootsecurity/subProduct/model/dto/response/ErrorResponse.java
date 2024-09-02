@@ -1,7 +1,6 @@
-package com.springboot.springbootsecurity.product.exception;
+package com.springboot.springbootsecurity.subProduct.model.dto.response;
 
 public class ErrorResponse {
-
     private int status;
     private String message;
 
@@ -9,8 +8,6 @@ public class ErrorResponse {
         this.status = status;
         this.message = message;
     }
-
-    // Getter ve Setter metodları
 
     public int getStatus() {
         return status;

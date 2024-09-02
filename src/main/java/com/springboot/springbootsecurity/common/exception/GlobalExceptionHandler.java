@@ -1,6 +1,9 @@
 package com.springboot.springbootsecurity.common.exception;
 
 import com.springboot.springbootsecurity.common.model.CustomError;
+import com.springboot.springbootsecurity.subProduct.exception.ErrorResponse;
+import com.springboot.springbootsecurity.subProduct.exception.SubProductAlreadyExistException;
+import com.springboot.springbootsecurity.subProduct.exception.SubProductNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -65,5 +68,20 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<?> handleAccessDeniedException(final AccessDeniedException accessDeniedException) {
         return new ResponseEntity<>(accessDeniedException.getMessage(), HttpStatus.FORBIDDEN);
     }
+    @ExceptionHandler(SubProductAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleSubProductAlreadyExistException(SubProductAlreadyExistException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(SubProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSubProductNotFoundException(SubProductNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+
+
+
 
 }
