@@ -8,7 +8,7 @@ public class SubProductAlreadyExistException extends RuntimeException{
     private static final long serialVersionUID = 6193758692340202558L;
 
     private static final String DEFAULT_MESSAGE = """
-            Ürün Zaten Mevcut!
+            ALT ÜRÜN Zaten Mevcut!
             """;
 
     public SubProductAlreadyExistException() {

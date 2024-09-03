@@ -31,7 +31,7 @@ public class ProductUpdateServiceImpl implements ProductUpdateService {
 
         final ProductEntity productEntityToBeUpdate = productRepository
                 .findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("With given productID = " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("Verilen product ID ile = " + productId));
 
         productUpdateRequestToProductEntityMapper.mapForUpdating(productEntityToBeUpdate, productUpdateRequest);
 
@@ -43,7 +43,7 @@ public class ProductUpdateServiceImpl implements ProductUpdateService {
 
     private void checkProductNameUniqueness(final String productName) {
         if (productRepository.existsProductEntityByName(productName)) {
-            throw new ProductAlreadyExistException("With given product name = " + productName);
+            throw new ProductAlreadyExistException("Verilen product Adı ile = " + productName);
         }
     }
 

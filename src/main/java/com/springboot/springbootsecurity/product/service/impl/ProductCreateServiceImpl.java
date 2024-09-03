@@ -37,7 +37,7 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     private void checkUniquenessProductName(final String productName) {
         if (productRepository.existsProductEntityByName(productName)) {
-            throw new ProductAlreadyExistException("There is another product with given name: " + productName);
+            throw new ProductAlreadyExistException("Adı verilen başka bir ürün daha var: " + productName);
         }
     }
 

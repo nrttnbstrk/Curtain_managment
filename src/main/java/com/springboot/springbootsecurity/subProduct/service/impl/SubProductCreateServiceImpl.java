@@ -1,5 +1,8 @@
 package com.springboot.springbootsecurity.subProduct.service.impl;
 
+import com.springboot.springbootsecurity.product.model.entity.ProductEntity;
+import com.springboot.springbootsecurity.product.repository.ProductRepository;
+import com.springboot.springbootsecurity.sale.repository.SaleRepository;
 import com.springboot.springbootsecurity.subProduct.exception.SubProductAlreadyExistException;
 import com.springboot.springbootsecurity.subProduct.model.SubProduct;
 import com.springboot.springbootsecurity.subProduct.model.dto.request.SubProductCreateRequest;
@@ -10,12 +13,17 @@ import com.springboot.springbootsecurity.subProduct.repository.SubProductReposit
 import com.springboot.springbootsecurity.subProduct.service.SubProductCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
 public class SubProductCreateServiceImpl implements SubProductCreateService {
 
     private final SubProductRepository subProductRepository;
+    private final ProductRepository productRepository;
+    private final SaleRepository saleRepository;
 
     private final SubProductCreateRequestToSubProductEntityMapper subProductCreateRequestToSubProductEntityMapper =
             SubProductCreateRequestToSubProductEntityMapper.initialize();
@@ -23,6 +31,7 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
     private final SubProductEntityToSubProductMapper subProductEntityToSubProductMapper = SubProductEntityToSubProductMapper.initialize();
 
     @Override
+    @Transactional
     public SubProduct createProduct(SubProductCreateRequest subProductCreateRequest) {
 
         checkUniquenessProductName(subProductCreateRequest.getBarcode());
@@ -31,8 +40,9 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
 
         SubProductEntity savedSubProductEntity = subProductRepository.save(subProductEntityToBeSave);
 
-        return subProductEntityToSubProductMapper.map(savedSubProductEntity);
+        updateProductTotalAmount(savedSubProductEntity.getProductId(), savedSubProductEntity.getAmount());
 
+        return subProductEntityToSubProductMapper.map(savedSubProductEntity);
     }
 
     private void checkUniquenessProductName(final String barcode) {
@@ -41,4 +51,11 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
         }
     }
 
+    private void updateProductTotalAmount(String productId, BigDecimal amountToAdd) {
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Ürün ID  bulunamadı: " + productId));
+
+        product.setTotalAmount(product.getTotalAmount().add(amountToAdd));
+        productRepository.save(product);
+    }
 }

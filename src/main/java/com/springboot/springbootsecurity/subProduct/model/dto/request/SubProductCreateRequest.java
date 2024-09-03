@@ -18,11 +18,11 @@ public class SubProductCreateRequest {
     @NotBlank(message = "Ürün barcode boş olamaz.")
     private String barcode;
 
-    @NotNull(message = "Amount cannot be null")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than zero")
+    @NotNull(message = "Miktar Bos Olamaz")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Miktar 0'dan Kucuk Olamaz")
     private BigDecimal amount;
 
-    @NotBlank(message = "Ana Ürün Id boş olamaz.")
+    @NotBlank(message = "Ana Urun Id bos olamaz.")
     private String productId;
 
     private String supplier;

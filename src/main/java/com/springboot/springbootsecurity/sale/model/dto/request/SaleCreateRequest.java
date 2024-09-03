@@ -19,6 +19,7 @@ public class SaleCreateRequest {
 
     private String customerId;
     private String productId;
+    private String subProductId;
     private String amount;
     private String status;
 

@@ -36,6 +36,8 @@ public class SaleEntity extends BaseEntity {
     private String customerId;
     @Column(name = "PRODUCT_ID")
     private String productId;
+    @Column(name = "SUB_PRODUCT_ID")
+    private String subProductId;
     @Column(name = "AMOUNT")
     private String amount;
     @Column(name = "STATUS")

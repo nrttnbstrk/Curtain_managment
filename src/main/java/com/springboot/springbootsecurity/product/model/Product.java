@@ -19,14 +19,14 @@ import java.math.BigDecimal;
 public class Product extends BaseDomainModel {
 
 
-    private String id;  // Ürün ID'si
-    private String name;  // Ürün adı
-    private String brand;  // Marka
+    private String id;
+    private String name;
+    private String brand;
     private String code;
     private String barcode;
-    private String unitType;  // Birim tipi
-    private BigDecimal totalAmount;  // Giriş stok adedi
-    private BigDecimal purchasePrice;  // Alış fiyatı
-    private BigDecimal sellingPrice;  // Satış fiyatı
-    private String supplier;  // Tedarikçi
+    private String unitType;
+    private BigDecimal totalAmount;
+    private BigDecimal purchasePrice;
+    private BigDecimal sellingPrice;
+    private String supplier;
 }

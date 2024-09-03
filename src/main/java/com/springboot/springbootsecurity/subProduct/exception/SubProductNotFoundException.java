@@ -8,7 +8,7 @@ public class SubProductNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 2329107146606835124L;
 
     private static final String DEFAULT_MESSAGE = """
-            URUN BULUNAMADI""";
+            ALT URUN BULUNAMADI""";
 
     public SubProductNotFoundException() {
         super(DEFAULT_MESSAGE);

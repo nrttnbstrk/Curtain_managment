@@ -16,6 +16,7 @@ public interface SaleUpdateRequestToSaleEntityMapper extends BaseMapper<SaleUpda
 
         saleEntityToBeUpdate.setCustomerId(saleUpdateRequest.getCustomerId());
         saleEntityToBeUpdate.setProductId(saleUpdateRequest.getProductId());
+        saleEntityToBeUpdate.setSubProductId(saleUpdateRequest.getSubProductId());
         saleEntityToBeUpdate.setAmount(saleUpdateRequest.getAmount());
         saleEntityToBeUpdate.setStatus(saleUpdateRequest.getStatus());
     }

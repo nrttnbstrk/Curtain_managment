@@ -16,6 +16,7 @@ public interface SaleCreateRequestToSaleEntityMapper extends BaseMapper<SaleCrea
         return SaleEntity.builder()
                 .customerId(saleCreateRequest.getCustomerId())
                 .productId(saleCreateRequest.getProductId())
+                .subProductId(saleCreateRequest.getSubProductId())
                 .amount(saleCreateRequest.getAmount())
                 .status(saleCreateRequest.getStatus())
                 .build();

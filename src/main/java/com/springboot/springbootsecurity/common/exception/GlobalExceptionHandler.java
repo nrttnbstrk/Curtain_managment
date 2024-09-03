@@ -2,6 +2,7 @@ package com.springboot.springbootsecurity.common.exception;
 
 import com.springboot.springbootsecurity.common.model.CustomError;
 import com.springboot.springbootsecurity.subProduct.exception.ErrorResponse;
+import com.springboot.springbootsecurity.sale.exception.InsufficientAmountException;
 import com.springboot.springbootsecurity.subProduct.exception.SubProductAlreadyExistException;
 import com.springboot.springbootsecurity.subProduct.exception.SubProductNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -80,7 +81,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-
+    @ExceptionHandler(InsufficientAmountException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientAmountException(InsufficientAmountException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 

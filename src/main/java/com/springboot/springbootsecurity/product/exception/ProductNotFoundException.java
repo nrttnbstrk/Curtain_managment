@@ -8,7 +8,7 @@ public class ProductNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 2329107146606835124L;
 
     private static final String DEFAULT_MESSAGE = """
-            Product not found!
+            URUN BULUNAMADI!
             """;
 
     public ProductNotFoundException() {

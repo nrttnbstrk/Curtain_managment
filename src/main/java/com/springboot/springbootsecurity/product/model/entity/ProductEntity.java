@@ -65,12 +65,6 @@ public class ProductEntity extends BaseEntity {
     )
     private BigDecimal sellingPrice;
 
-    @Column(
-            name = "VAT_RATE",
-            precision = 5,
-            scale = 2
-    )
-    private BigDecimal vatRate;
 
     @Column(name = "SUPPLIER")
     private String supplier;

@@ -13,12 +13,12 @@ public interface SubProductUpdateRequestToSubProductEntityMapper extends BaseMap
 
     @Named("mapForUpdating")
     default void mapForUpdating(SubProductEntity subProductEntityToBeUpdate, SubProductUpdateRequest subProductUpdateRequest) {
-
         subProductEntityToBeUpdate.setProductId(subProductEntityToBeUpdate.getProductId());
         subProductEntityToBeUpdate.setBarcode(subProductEntityToBeUpdate.getBarcode());
         subProductEntityToBeUpdate.setSupplier(subProductUpdateRequest.getSupplier());
-        subProductEntityToBeUpdate.setAmount(subProductEntityToBeUpdate.getAmount());
+        subProductEntityToBeUpdate.setAmount(subProductUpdateRequest.getAmount());
     }
+
 
     static SubProductUpdateRequestToSubProductEntityMapper initialize() {
         return Mappers.getMapper(SubProductUpdateRequestToSubProductEntityMapper.class);

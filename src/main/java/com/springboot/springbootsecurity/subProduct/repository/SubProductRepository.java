@@ -4,8 +4,11 @@ import com.springboot.springbootsecurity.subProduct.model.entity.SubProductEntit
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
 
-    public interface SubProductRepository extends JpaRepository<SubProductEntity, String>, JpaSpecificationExecutor<SubProductEntity> {
+
+public interface SubProductRepository extends JpaRepository<SubProductEntity, String>, JpaSpecificationExecutor<SubProductEntity> {
     boolean existsProductEntityByBarcode(final String barcode);
+        List<SubProductEntity> findByProductId(String productId);
         boolean existsProductEntityByBarcodeAndIdNot(String barcode, String id);
 }

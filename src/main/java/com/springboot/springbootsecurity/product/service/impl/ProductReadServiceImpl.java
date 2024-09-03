@@ -36,7 +36,7 @@ public class ProductReadServiceImpl implements ProductReadService {
 
         final ProductEntity productEntityFromDB = productRepository
                 .findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("With given productID = " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("Verilen product ID ile = " + productId));
 
         return productEntityToProductMapper.map(productEntityFromDB);
     }
@@ -47,7 +47,7 @@ public class ProductReadServiceImpl implements ProductReadService {
         final Page<ProductEntity> productEntityPage = productRepository.findAll(productPagingRequest.toPageable());
 
         if (productEntityPage.getContent().isEmpty()) {
-            throw new ProductNotFoundException("Couldn't find any Product");
+            throw new ProductNotFoundException("Herhangi bir Ürün bulunamadı");
         }
 
         final List<Product> productDomainModels = listProductEntityToListProductMapper

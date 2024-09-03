@@ -31,7 +31,7 @@ public class SaleReadServiceImpl implements SaleReadService {
 
         final SaleEntity saleEntityFromDB = saleRepository
                 .findById(saleId)
-                .orElseThrow(() -> new SaleNotFoundException("With given saleId = " + saleId));
+                .orElseThrow(() -> new SaleNotFoundException("Verilen sale Id ile = " + saleId));
 
         return saleEntityToSaleMapper.map(saleEntityFromDB);
     }
@@ -40,7 +40,7 @@ public class SaleReadServiceImpl implements SaleReadService {
         final List<SaleEntity> saleEntities = saleRepository.findByCustomerId(customerId);
 
         if (saleEntities.isEmpty()) {
-            throw new SaleNotFoundException("No sales found for customerId = " + customerId);
+            throw new SaleNotFoundException("customer Id için satış bulunamadı = " + customerId);
         }
 
         return listSaleEntityToListSaleMapper.toSaleList(saleEntities);
@@ -51,7 +51,7 @@ public class SaleReadServiceImpl implements SaleReadService {
         final Page<SaleEntity> saleEntityPage = saleRepository.findAll(salePagingRequest.toPageable());
 
         if (saleEntityPage.getContent().isEmpty()) {
-            throw new SaleNotFoundException("Couldn't find any sale");
+            throw new SaleNotFoundException("Herhangi bir satış bulunamadı");
         }
 
         final List<Sale> saleDomainModels = listSaleEntityToListSaleMapper
