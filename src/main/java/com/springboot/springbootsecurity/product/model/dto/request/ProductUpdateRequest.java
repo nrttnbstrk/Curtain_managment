@@ -17,23 +17,24 @@ public class ProductUpdateRequest {
 
     @NotBlank(message = "Ürün adı boş olamaz.")
     @Size(min = 1, message = "Ürün adı boş olamaz.")
-    private String name;  // Ürün adı
+    private String name;
 
     @NotBlank(message = "Marka boş olamaz.")
-    private String brand;  // Marka
+    private String brand;
+
     private String code;
 
     private String barcode;
     @NotBlank(message = "Birim tipi boş olamaz.")
-    private String unitType;  // Birim tipi
+    private String unitType;
 
     @NotNull(message = "Alış fiyatı boş olamaz.")
     @DecimalMin(value = "0.0001", message = "Alış fiyatı 0'dan büyük olmalıdır.")
-    private BigDecimal purchasePrice;  // Alış fiyatı
+    private BigDecimal purchasePrice;
 
     @NotNull(message = "Satış fiyatı boş olamaz.")
     @DecimalMin(value = "0.0001", message = "Satış fiyatı 0'dan büyük olmalıdır.")
-    private BigDecimal sellingPrice;  // Satış fiyatı
+    private BigDecimal sellingPrice;
 
 
     @NotBlank(message = "Tedarikçi boş olamaz.")

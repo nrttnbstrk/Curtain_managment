@@ -29,50 +29,49 @@ public class ProductEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private String id;  // Ürün ID'si
+    private String id;
 
     @Column(name = "NAME")
-    private String name;  // Ürün adı
+    private String name;
 
     @Column(name = "BRAND")
-    private String brand;  // Marka
+    private String brand;
     @Column(name = "CODE")
     private String code;
     @Column(name = "BARCODE")
     private String barcode;
 
     @Column(name = "UNIT_TYPE")
-    private String unitType;  // Birim tipi
+    private String unitType;
 
     @Column(
             name = "TOTAL_AMOUNT",
             precision = 24,
             scale = 4
     )
-    private BigDecimal totalAmount;  // Giriş stok adedi
+    private BigDecimal totalAmount;
 
     @Column(
             name = "PURCHASE_PRICE",
             precision = 24,
             scale = 4
     )
-    private BigDecimal purchasePrice;  // Alış fiyatı
+    private BigDecimal purchasePrice;
 
     @Column(
             name = "SELLING_PRICE",
             precision = 24,
             scale = 4
     )
-    private BigDecimal sellingPrice;  // Satış fiyatı
+    private BigDecimal sellingPrice;
 
     @Column(
             name = "VAT_RATE",
             precision = 5,
             scale = 2
     )
-    private BigDecimal vatRate;  // KDV oranı
+    private BigDecimal vatRate;
 
     @Column(name = "SUPPLIER")
-    private String supplier;  // Tedarikçi
-
+    private String supplier;
 }

@@ -2,7 +2,6 @@ package com.springboot.springbootsecurity.product.model.dto.request;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -17,27 +16,26 @@ public class ProductCreateRequest {
 
     @NotBlank(message = "Ürün adı boş olamaz.")
     @Size(min = 1, message = "Ürün adı boş olamaz.")
-    private String name;  // adı
+    private String name;
 
     @NotBlank(message = "Marka boş olamaz.")
-    private String brand;  // markası
+    private String brand;
 
     private String code;
 
     private String barcode;
 
     @NotBlank(message = "Birim tipi boş olamaz.")
-    private String unitType;  // birimtipi
+    private String unitType;
 
 
     @DecimalMin(value = "0.0001", message = "Alış fiyatı 0'dan büyük olmalıdır.")
-    private BigDecimal purchasePrice;  // alış fiyatı
+    private BigDecimal purchasePrice;
 
 
     @DecimalMin(value = "0.0001", message = "Satış fiyatı 0'dan büyük olmalıdır.")
-    private BigDecimal sellingPrice;  // satış fiyatı
-
+    private BigDecimal sellingPrice;
 
     @NotBlank(message = "Tedarikçi boş olamaz.")
-    private String supplier;  // tedarikçisi
+    private String supplier;
 }

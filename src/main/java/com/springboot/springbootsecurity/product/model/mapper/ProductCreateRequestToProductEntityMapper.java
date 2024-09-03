@@ -14,13 +14,13 @@ public interface ProductCreateRequestToProductEntityMapper extends BaseMapper<Pr
     default ProductEntity mapForSaving(ProductCreateRequest productCreateRequest) {
         return ProductEntity.builder()
                 .name(productCreateRequest.getName())
-                .brand(productCreateRequest.getBrand())  // Markayı ekleyin
+                .brand(productCreateRequest.getBrand())
                 .code(productCreateRequest.getCode())
                 .barcode(productCreateRequest.getBarcode())
-                .unitType(productCreateRequest.getUnitType())  // Birim tipini ekleyin
-                .purchasePrice(productCreateRequest.getPurchasePrice())  // Alış fiyatını ekleyin
-                .sellingPrice(productCreateRequest.getSellingPrice())  // Satış fiyatını ekleyin
-                .supplier(productCreateRequest.getSupplier())  // Tedarikçiyi ekleyin
+                .unitType(productCreateRequest.getUnitType())
+                .purchasePrice(productCreateRequest.getPurchasePrice())
+                .sellingPrice(productCreateRequest.getSellingPrice())
+                .supplier(productCreateRequest.getSupplier())
                 .build();
     }
 
