@@ -6,8 +6,10 @@ import com.springboot.springbootsecurity.common.model.dto.response.CustomRespons
 import com.springboot.springbootsecurity.sale.model.Sale;
 import com.springboot.springbootsecurity.sale.model.dto.request.SaleCreateRequest;
 import com.springboot.springbootsecurity.sale.model.dto.request.SalePagingRequest;
+import com.springboot.springbootsecurity.sale.model.dto.request.SaleSearchRequest;
 import com.springboot.springbootsecurity.sale.model.dto.request.SaleUpdateRequest;
 import com.springboot.springbootsecurity.sale.model.dto.response.SaleResponse;
+import com.springboot.springbootsecurity.sale.model.dto.response.SaleSearchResponse;
 import com.springboot.springbootsecurity.sale.model.mapper.CustomPageToCustomPagingResponseMapper;
 import com.springboot.springbootsecurity.sale.model.mapper.SaleToSaleResponseMapper;
 import com.springboot.springbootsecurity.sale.service.SaleCreateService;
@@ -107,5 +109,9 @@ public class SaleController {
 
         return CustomResponse.successOf(saleResponses);
     }
-
+    @PostMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public List<SaleSearchResponse> searchSale(@RequestBody @Valid final SaleSearchRequest searchRequest) {
+        return saleReadService.SearchSale(searchRequest);
+    }
 }
