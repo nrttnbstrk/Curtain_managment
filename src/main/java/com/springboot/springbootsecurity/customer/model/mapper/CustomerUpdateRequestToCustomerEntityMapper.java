@@ -17,7 +17,7 @@ public interface CustomerUpdateRequestToCustomerEntityMapper extends BaseMapper<
         customerEntityToBeUpdate.setFirstname(customerUpdateRequest.getFirstname());
         customerEntityToBeUpdate.setLastname(customerUpdateRequest.getLastname());
         customerEntityToBeUpdate.setLast_id(customerEntityToBeUpdate.getLast_id());
-        customerEntityToBeUpdate.setId_number(customerUpdateRequest.getId_number());
+        customerEntityToBeUpdate.setIdNumber(customerUpdateRequest.getIdNumber());
         customerEntityToBeUpdate.setPhone(customerUpdateRequest.getPhone());
         customerEntityToBeUpdate.setCity(customerUpdateRequest.getCity());
         customerEntityToBeUpdate.setDistrict(customerUpdateRequest.getDistrict());

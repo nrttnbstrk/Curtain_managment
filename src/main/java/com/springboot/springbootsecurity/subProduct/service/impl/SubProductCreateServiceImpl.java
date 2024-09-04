@@ -47,13 +47,13 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
 
     private void checkUniquenessProductName(final String barcode) {
         if (subProductRepository.existsProductEntityByBarcode(barcode)) {
-            throw new SubProductAlreadyExistException("Verilen barkoda sahip başka bir ürün var: " + barcode);
+            throw new SubProductAlreadyExistException("Verilen barkoda sahip başka bir ALT URUN zaten mevcut.");
         }
     }
 
     private void updateProductTotalAmount(String productId, BigDecimal amountToAdd) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Ürün ID  bulunamadı: " + productId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil."));
 
         product.setTotalAmount(product.getTotalAmount().add(amountToAdd));
         productRepository.save(product);

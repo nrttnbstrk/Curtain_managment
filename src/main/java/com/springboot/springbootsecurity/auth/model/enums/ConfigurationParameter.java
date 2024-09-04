@@ -9,7 +9,7 @@ public enum ConfigurationParameter {
 
     ISSUER("ISSUER"),
 
-    AUTH_ACCESS_TOKEN_EXPIRE_MINUTE("30"),
+    AUTH_ACCESS_TOKEN_EXPIRE_MINUTE("60"),
     AUTH_REFRESH_TOKEN_EXPIRE_DAY("1"),
     AUTH_PUBLIC_KEY("""
             -----BEGIN PUBLIC KEY-----

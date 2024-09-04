@@ -39,7 +39,7 @@ public class CustomerEntity extends BaseEntity {
     private String last_id;
 
     @Column(name = "id_number")
-    private String id_number;
+    private String idNumber;
     @Column(name = "phone")
     private String phone;
     @Column(name = "city")

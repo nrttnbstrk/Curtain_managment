@@ -7,9 +7,7 @@ public class SaleNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 2329107146606835124L;
 
-    private static final String DEFAULT_MESSAGE = """
-            SATIS BULUNAMADI!
-            """;
+    private static final String DEFAULT_MESSAGE = "";
 
     public SaleNotFoundException() {
         super(DEFAULT_MESSAGE);

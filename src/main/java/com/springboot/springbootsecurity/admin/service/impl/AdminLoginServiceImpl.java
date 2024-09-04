@@ -26,9 +26,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         final AdminEntity adminEntityFromDB = adminRepository
                 .findAdminEntityByEmail(loginRequest.getEmail())
                 .orElseThrow(
-                        () -> new AdminNotFoundException("Can't find with given email: "
-                                + loginRequest.getEmail())
-                );
+                        () -> new AdminNotFoundException("Giriş yapılan E-posta Kayıtlı Değil. "));
 
         if (Boolean.FALSE.equals(passwordEncoder.matches(
                 loginRequest.getPassword(), adminEntityFromDB.getPassword()))) {

@@ -18,7 +18,7 @@ public class CustomerDeleteServiceImpl implements CustomerDeleteService {
 
         final CustomerEntity customerEntityToBeDelete = customerRepository
                 .findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("With given customerId = " + customerId));
+                .orElseThrow(() -> new CustomerNotFoundException("Silmek istediğiniz müşteri mevcut değil."));
 
         customerRepository.delete(customerEntityToBeDelete);
 

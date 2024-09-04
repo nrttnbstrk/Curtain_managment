@@ -8,7 +8,7 @@ public class UserStatusNotValidException extends RuntimeException {
     private static final long serialVersionUID = 3440177088502218750L;
 
     private static final String DEFAULT_MESSAGE = """
-            User status is not valid!
+            Kullanıcı statüsü geçerli değil!
             """;
 
     public UserStatusNotValidException() {

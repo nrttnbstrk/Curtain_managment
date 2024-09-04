@@ -25,7 +25,7 @@ public class SaleDeleteServiceImpl implements SaleDeleteService {
 
         final SaleEntity saleEntityToBeDelete = saleRepository
                 .findById(saleId)
-                .orElseThrow(() -> new SaleNotFoundException("Verilen sale Id ile = " + saleId));
+                .orElseThrow(() -> new SaleNotFoundException("Belirtilen SATIS mevcut değil."));
 
         updateProductTotalAmount(saleEntityToBeDelete.getProductId(), saleEntityToBeDelete.getAmount());
 
@@ -36,7 +36,7 @@ public class SaleDeleteServiceImpl implements SaleDeleteService {
         BigDecimal amountToSubtract = new BigDecimal(amountToDeduct);
 
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Ürün ID bulunamadı: " + productId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen URUN mevcut değil."));
 
         BigDecimal newTotalAmount = product.getTotalAmount().subtract(amountToSubtract);
 

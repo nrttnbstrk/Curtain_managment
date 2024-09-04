@@ -25,7 +25,7 @@ public class CustomerCreateServiceImpl implements CustomerCreateService {
     @Override
     public Customer createCustomer(CustomerCreateRequest customerCreateRequest) {
 
-        checkUniquenessIdNumber(customerCreateRequest.getId_number());
+        checkUniquenessIdNumber(customerCreateRequest.getIdNumber());
 
         final CustomerEntity customerEntityToBeSave = customerCreateRequestToCustomerEntityMapper.mapForSaving(customerCreateRequest);
 
@@ -35,8 +35,10 @@ public class CustomerCreateServiceImpl implements CustomerCreateService {
 
     }
 
-    private void checkUniquenessIdNumber(final String id_number) {
-
+    private void checkUniquenessIdNumber(final String idNumber) {
+        if (customerRepository.existsCustomerEntityByIdNumber(idNumber)) {
+            throw new CustomerAlreadyExistException("Bu Kimlik numarası ile müşteri zaten mevcut.");
+        }
     }
 
 }

@@ -26,8 +26,8 @@ import java.util.List;
 public class CustomerReadServiceImpl implements CustomerReadService {
 
     private final CustomerRepository customerRepository;
-    public boolean doesCustomerExistByFirstname(String firstname) {
-        return customerRepository.existsCustomerEntityByFirstname(firstname);
+    public boolean doesCustomerExistByIdNumber(String idNumber) {
+        return customerRepository.existsCustomerEntityByIdNumber(idNumber);
     }
     private final CustomerEntityToCustomerMapper customerEntityToCustomerMapper = CustomerEntityToCustomerMapper.initialize();
 
@@ -39,7 +39,7 @@ public class CustomerReadServiceImpl implements CustomerReadService {
 
         final CustomerEntity customerEntityFromDB = customerRepository
                 .findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("With given customerId = " + customerId));
+                .orElseThrow(() -> new CustomerNotFoundException("Belirtilen müşteri mevcut değil."));
 
         return customerEntityToCustomerMapper.map(customerEntityFromDB);
     }
@@ -50,7 +50,7 @@ public class CustomerReadServiceImpl implements CustomerReadService {
         final Page<CustomerEntity> customerEntityPage = customerRepository.findAll(customerPagingRequest.toPageable());
 
         if (customerEntityPage.getContent().isEmpty()) {
-            throw new CustomerNotFoundException("Couldn't find any customer");
+            throw new CustomerNotFoundException("Herhangi bir müşteri bulunamadı.");
         }
 
         final List<Customer> customerDomainModels = listCustomerEntityToListCustomerMapper

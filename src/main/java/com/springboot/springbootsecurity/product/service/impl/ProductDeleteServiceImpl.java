@@ -18,7 +18,7 @@ public class ProductDeleteServiceImpl implements ProductDeleteService {
 
         final ProductEntity productEntityToBeDelete = productRepository
                 .findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Verilen product ID ile = " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("Silmek için belirtilen ürün mevcut değil."));
 
         productRepository.delete(productEntityToBeDelete);
 

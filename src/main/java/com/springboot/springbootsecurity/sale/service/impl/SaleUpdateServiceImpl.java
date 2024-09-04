@@ -1,5 +1,7 @@
 package com.springboot.springbootsecurity.sale.service.impl;
 
+import com.springboot.springbootsecurity.customer.model.entity.CustomerEntity;
+import com.springboot.springbootsecurity.customer.repository.CustomerRepository;
 import com.springboot.springbootsecurity.product.model.entity.ProductEntity;
 import com.springboot.springbootsecurity.product.repository.ProductRepository;
 import com.springboot.springbootsecurity.sale.exception.SaleAlreadyExistException;
@@ -26,7 +28,7 @@ public class SaleUpdateServiceImpl implements SaleUpdateService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
     private final SubProductRepository subProductRepository;
-
+    private final CustomerRepository customerRepository;
     private final SaleUpdateRequestToSaleEntityMapper saleUpdateRequestToSaleEntityMapper =
             SaleUpdateRequestToSaleEntityMapper.initialize();
 
@@ -39,7 +41,7 @@ public class SaleUpdateServiceImpl implements SaleUpdateService {
 
         final SaleEntity saleEntityToBeUpdate = saleRepository
                 .findById(saleId)
-                .orElseThrow(() -> new SaleNotFoundException("Verilen sale Id ile = " + saleId));
+                .orElseThrow(() -> new SaleNotFoundException("Belirtilen SATIS mevcut değil."));
 
         BigDecimal previousAmount = new BigDecimal(saleEntityToBeUpdate.getAmount());
 
@@ -57,10 +59,12 @@ public class SaleUpdateServiceImpl implements SaleUpdateService {
         String subProductId = saleEntity.getSubProductId();
 
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Ürün ID bulunamadı: " + productId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen URUN mevcut değil."));
 
         SubProductEntity subProduct = subProductRepository.findById(subProductId)
-                .orElseThrow(() -> new RuntimeException("alt ürün bulunamadı: " + subProductId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil. "));
+        CustomerEntity customer = customerRepository.findById(saleEntity.getCustomerId())
+                .orElseThrow(() -> new SaleNotFoundException("Belirtilen MÜŞTERİ mevcut değil."));
 
         BigDecimal newAmount = new BigDecimal(saleEntity.getAmount());
 

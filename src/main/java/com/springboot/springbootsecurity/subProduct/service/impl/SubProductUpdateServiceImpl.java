@@ -37,7 +37,7 @@ public class SubProductUpdateServiceImpl implements SubProductUpdateService {
 
         final SubProductEntity subProductEntityToBeUpdate = subProductRepository
                 .findById(subProductId)
-                .orElseThrow(() -> new SubProductNotFoundException("Bu Ürün Bulunamadı = " + subProductId));
+                .orElseThrow(() -> new SubProductNotFoundException("Belirtilen ALT URUN mevcut değil."));
 
         if (!subProductEntityToBeUpdate.getBarcode().equals(subProductUpdateRequest.getBarcode())) {
             checkProductNameUniqueness(subProductId, subProductUpdateRequest.getBarcode());
@@ -58,7 +58,7 @@ public class SubProductUpdateServiceImpl implements SubProductUpdateService {
         BigDecimal difference = newAmount.subtract(previousAmount);
 
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Ürün ID bulunamadı: " + productId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil."));
 
         product.setTotalAmount(product.getTotalAmount().add(difference));
         productRepository.save(product);
@@ -67,7 +67,7 @@ public class SubProductUpdateServiceImpl implements SubProductUpdateService {
     private void checkProductNameUniqueness(final String subProductId, final String barcode) {
         boolean barcodeExists = subProductRepository.existsProductEntityByBarcodeAndIdNot(barcode, subProductId);
         if (barcodeExists) {
-            throw new SubProductAlreadyExistException("Verilen ürün barkodu ile = " + barcode);
+            throw new SubProductAlreadyExistException("Girilen ALT URUN barkodu zaten mevcut.");
         }
     }
 }

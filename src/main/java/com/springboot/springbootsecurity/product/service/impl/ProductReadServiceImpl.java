@@ -36,7 +36,7 @@ public class ProductReadServiceImpl implements ProductReadService {
 
         final ProductEntity productEntityFromDB = productRepository
                 .findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Verilen product ID ile = " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("Belirtilen ürün mevcut değil."));
 
         return productEntityToProductMapper.map(productEntityFromDB);
     }

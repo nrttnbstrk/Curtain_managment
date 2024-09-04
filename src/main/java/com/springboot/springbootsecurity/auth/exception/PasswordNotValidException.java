@@ -7,16 +7,14 @@ public class PasswordNotValidException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 7389659106153108528L;
 
-    private static final String DEFAULT_MESSAGE = """
-            Password is not valid!
-            """;
+    private static final String DEFAULT_MESSAGE = "Şifre geçerli değil!" ;
 
     public PasswordNotValidException() {
         super(DEFAULT_MESSAGE);
     }
 
     public PasswordNotValidException(final String message) {
-        super(DEFAULT_MESSAGE + " " + message);
+        super(DEFAULT_MESSAGE);
     }
 
 }

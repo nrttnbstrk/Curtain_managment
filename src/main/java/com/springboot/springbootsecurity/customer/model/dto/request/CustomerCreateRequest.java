@@ -20,7 +20,7 @@ public class CustomerCreateRequest {
     private String firstname;
     private String lastname;
     private String last_id;
-    private String id_number;
+    private String idNumber;
     private String phone;
     private String city;
     private String district;

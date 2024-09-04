@@ -5,6 +5,15 @@ import com.springboot.springbootsecurity.subProduct.exception.ErrorResponse;
 import com.springboot.springbootsecurity.sale.exception.InsufficientAmountException;
 import com.springboot.springbootsecurity.subProduct.exception.SubProductAlreadyExistException;
 import com.springboot.springbootsecurity.subProduct.exception.SubProductNotFoundException;
+import com.springboot.springbootsecurity.sale.exception.SaleNotFoundException;
+import com.springboot.springbootsecurity.admin.exception.AdminAlreadyExistException;
+import com.springboot.springbootsecurity.admin.exception.AdminNotFoundException;
+import com.springboot.springbootsecurity.auth.exception.PasswordNotValidException;
+import com.springboot.springbootsecurity.auth.exception.UserStatusNotValidException;
+import com.springboot.springbootsecurity.auth.exception.TokenAlreadyInvalidatedException;
+import com.springboot.springbootsecurity.product.exception.*;
+import com.springboot.springbootsecurity.customer.exception.*;
+import com.springboot.springbootsecurity.sale.exception.SaleAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -86,7 +95,58 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(SaleNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSaleNotFoundException(SaleNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 
+    @ExceptionHandler(AdminAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleAdminAlreadyExistException(AdminAlreadyExistException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(AdminNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAdminNotFoundException(AdminNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PasswordNotValidException.class)
+    public ResponseEntity<ErrorResponse> handlePasswordNotValidException(PasswordNotValidException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UserStatusNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleUserStatusNotValidException(UserStatusNotValidException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(TokenAlreadyInvalidatedException.class)
+    public ResponseEntity<ErrorResponse> handleTokenAlreadyInvalidatedException(TokenAlreadyInvalidatedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(ProductAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleProductAlreadyExistException(ProductAlreadyExistException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNotFoundException(ProductNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(CustomerAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleCustomerAlreadyExistException(CustomerAlreadyExistException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

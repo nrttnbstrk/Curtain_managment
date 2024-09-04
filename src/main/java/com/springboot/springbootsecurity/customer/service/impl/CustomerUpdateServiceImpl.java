@@ -27,11 +27,11 @@ public class CustomerUpdateServiceImpl implements CustomerUpdateService {
     @Override
     public Customer updateCustomerById(String customerId, CustomerUpdateRequest customerUpdateRequest) {
 
-        checkCustomerIdNumberUniqueness(customerUpdateRequest.getId_number());
+        checkCustomerIdNumberUniqueness(customerUpdateRequest.getIdNumber());
 
         final CustomerEntity customerEntityToBeUpdate = customerRepository
                 .findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("With given customerId = " + customerId));
+                .orElseThrow(() -> new CustomerNotFoundException("Belirtilen müşteri mevcut değil." ));
 
         customerUpdateRequestToCustomerEntityMapper.mapForUpdating(customerEntityToBeUpdate, customerUpdateRequest);
 
@@ -41,8 +41,10 @@ public class CustomerUpdateServiceImpl implements CustomerUpdateService {
 
     }
 
-    private void checkCustomerIdNumberUniqueness(final String customerIdNumber) {
-
+    private void checkCustomerIdNumberUniqueness(final String idNumber) {
+        if (customerRepository.existsCustomerEntityByIdNumber(idNumber)) {
+            throw new CustomerAlreadyExistException("Bu Kimlik numarası ile müşteri zaten mevcut.");
+        }
     }
 
 }

@@ -29,7 +29,7 @@ public class AdminRegisterServiceImpl implements AdminRegisterService {
     public Admin registerAdmin(AdminRegisterRequest adminRegisterRequest) {
 
         if (adminRepository.existsAdminEntityByEmail(adminRegisterRequest.getEmail())) {
-            throw new AdminAlreadyExistException("The email is already used for another admin : " + adminRegisterRequest.getEmail());
+            throw new AdminAlreadyExistException("Bu mail adresi zaten kullanılmakta.");
         }
 
         final AdminEntity adminEntityToBeSave = adminRegisterRequestToAdminEntityMapper.mapForSaving(adminRegisterRequest);

@@ -7,9 +7,7 @@ public class AdminNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -6226206922525682121L;
 
-    private static final String DEFAULT_MESSAGE = """
-            Admin not found!
-            """;
+    private static final String DEFAULT_MESSAGE = "";
 
     public AdminNotFoundException() {
         super(DEFAULT_MESSAGE);

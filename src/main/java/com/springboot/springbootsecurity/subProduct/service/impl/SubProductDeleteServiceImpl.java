@@ -26,7 +26,7 @@ public class SubProductDeleteServiceImpl implements SubProductDeleteService {
 
         final SubProductEntity subProductEntityToBeDelete = subProductRepository
                 .findById(subProductId)
-                .orElseThrow(() -> new SubProductNotFoundException("Verilen productID = " + subProductId));
+                .orElseThrow(() -> new SubProductNotFoundException("Silmek istediğiniz ALT URUN mevcut değil."));
 
         BigDecimal amountToSubtract = subProductEntityToBeDelete.getAmount();
 
@@ -37,7 +37,7 @@ public class SubProductDeleteServiceImpl implements SubProductDeleteService {
 
     private void adjustProductTotalAmount(String productId, BigDecimal amountToSubtract) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Ürün ID bulunamadı: " + productId));
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil."));
 
         product.setTotalAmount(product.getTotalAmount().subtract(amountToSubtract));
         productRepository.save(product);

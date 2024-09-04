@@ -8,7 +8,7 @@ public class TokenAlreadyInvalidatedException extends RuntimeException {
     private static final long serialVersionUID = -3922046409563858698L;
 
     private static final String DEFAULT_MESSAGE = """
-            Token is already invalidated!
+            Token zaten geçersiz kılındı!
             """;
 
     public TokenAlreadyInvalidatedException() {

@@ -36,7 +36,7 @@ public class SubProductReadServiceImpl implements SubProductReadService {
 
         final SubProductEntity subProductEntityFromDB = subProductRepository
                 .findById(productId)
-                .orElseThrow(() -> new SubProductNotFoundException("With given productID = " + productId));
+                .orElseThrow(() -> new SubProductNotFoundException("Belirtilen ALT URUN mevcut değil."));
 
         return subProductEntityToSubProductMapper.map(subProductEntityFromDB);
     }
@@ -47,7 +47,7 @@ public class SubProductReadServiceImpl implements SubProductReadService {
         final Page<SubProductEntity> productEntityPage = subProductRepository.findAll(subProductPagingRequest.toPageable());
 
         if (productEntityPage.getContent().isEmpty()) {
-            throw new SubProductNotFoundException("Couldn't find any Product");
+            throw new SubProductNotFoundException("Herhangi bir ALT URUN bulunamadı");
         }
 
         final List<SubProduct> productDomainModels = listSubProductEntityToListProductMapper

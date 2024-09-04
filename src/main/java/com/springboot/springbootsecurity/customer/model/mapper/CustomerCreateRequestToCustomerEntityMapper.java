@@ -17,7 +17,7 @@ public interface CustomerCreateRequestToCustomerEntityMapper extends BaseMapper<
                 .firstname(customerCreateRequest.getFirstname())
                 .lastname(customerCreateRequest.getLastname())
                 .last_id(customerCreateRequest.getLast_id())
-                .id_number(customerCreateRequest.getId_number())
+                .idNumber(customerCreateRequest.getIdNumber())
                 .phone(customerCreateRequest.getPhone())
                 .city(customerCreateRequest.getCity())
                 .district(customerCreateRequest.getDistrict())

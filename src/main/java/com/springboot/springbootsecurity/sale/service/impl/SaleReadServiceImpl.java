@@ -12,6 +12,7 @@ import com.springboot.springbootsecurity.sale.model.mapper.ListSaleEntityToListS
 import com.springboot.springbootsecurity.sale.model.mapper.SaleEntityToSaleMapper;
 import com.springboot.springbootsecurity.sale.repository.SaleRepository;
 import com.springboot.springbootsecurity.sale.service.SaleReadService;
+import com.springboot.springbootsecurity.common.exception.GlobalExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -36,7 +37,7 @@ public class SaleReadServiceImpl implements SaleReadService {
 
         final SaleEntity saleEntityFromDB = saleRepository
                 .findById(saleId)
-                .orElseThrow(() -> new SaleNotFoundException("Verilen sale Id ile = " + saleId));
+                .orElseThrow(() -> new SaleNotFoundException("Belirtilen SATIS mevcut değil."));
 
         return saleEntityToSaleMapper.map(saleEntityFromDB);
     }
@@ -45,7 +46,7 @@ public class SaleReadServiceImpl implements SaleReadService {
         final List<SaleEntity> saleEntities = saleRepository.findByCustomerId(customerId);
 
         if (saleEntities.isEmpty()) {
-            throw new SaleNotFoundException("customer Id için satış bulunamadı = " + customerId);
+            throw new SaleNotFoundException("Belirtilen MUSTERI için satış bulunamadı ");
         }
 
         return listSaleEntityToListSaleMapper.toSaleList(saleEntities);
