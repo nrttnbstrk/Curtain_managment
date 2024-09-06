@@ -1,0 +1,20 @@
+package com.enb.curtainmanagement.auth.exception;
+
+import java.io.Serial;
+
+public class PasswordNotValidException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 7389659106153108528L;
+
+    private static final String DEFAULT_MESSAGE = "Şifre geçerli değil!" ;
+
+    public PasswordNotValidException() {
+        super(DEFAULT_MESSAGE);
+    }
+
+    public PasswordNotValidException(final String message) {
+        super(DEFAULT_MESSAGE);
+    }
+
+}
