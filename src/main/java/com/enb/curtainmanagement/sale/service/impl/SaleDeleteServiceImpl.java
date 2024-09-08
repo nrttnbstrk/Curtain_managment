@@ -6,6 +6,8 @@ import com.enb.curtainmanagement.sale.exception.SaleNotFoundException;
 import com.enb.curtainmanagement.sale.model.entity.SaleEntity;
 import com.enb.curtainmanagement.sale.repository.SaleRepository;
 import com.enb.curtainmanagement.sale.service.SaleDeleteService;
+import com.enb.curtainmanagement.subProduct.model.entity.SubProductEntity;
+import com.enb.curtainmanagement.subProduct.repository.SubProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ public class SaleDeleteServiceImpl implements SaleDeleteService {
 
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
+    private final SubProductRepository subProductRepository;
 
     @Override
     @Transactional
@@ -27,7 +30,11 @@ public class SaleDeleteServiceImpl implements SaleDeleteService {
                 .findById(saleId)
                 .orElseThrow(() -> new SaleNotFoundException("Belirtilen SATIS mevcut değil."));
 
-        updateProductTotalAmount(saleEntityToBeDelete.getProductId(), saleEntityToBeDelete.getAmount());
+        if ("cut".equals(saleEntityToBeDelete.getStatus())) {
+            updateProductTotalAmount(saleEntityToBeDelete.getProductId(), saleEntityToBeDelete.getAmount());
+        } else {
+            updateSubProductWaitAmount(saleEntityToBeDelete.getSubProductId(), saleEntityToBeDelete.getAmount());
+        }
 
         saleRepository.delete(saleEntityToBeDelete);
     }
@@ -42,5 +49,17 @@ public class SaleDeleteServiceImpl implements SaleDeleteService {
 
         product.setTotalAmount(newTotalAmount);
         productRepository.save(product);
+    }
+
+    private void updateSubProductWaitAmount(String subProductId, String amountToDeduct) {
+        BigDecimal amountToSubtract = new BigDecimal(amountToDeduct);
+
+        SubProductEntity subProduct = subProductRepository.findById(subProductId)
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil."));
+
+        BigDecimal newWaitAmount = subProduct.getWaitAmount().subtract(amountToSubtract);
+
+        subProduct.setWaitAmount(newWaitAmount);
+        subProductRepository.save(subProduct);
     }
 }

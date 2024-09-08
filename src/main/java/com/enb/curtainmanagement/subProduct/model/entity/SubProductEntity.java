@@ -42,7 +42,13 @@ public class SubProductEntity extends BaseEntity {
             precision = 24,
             scale = 4
     )
-    private BigDecimal amount;
+    private BigDecimal amount= BigDecimal.ZERO;
+    
+    @Column( name = "WAIT_AMOUNT",
+            precision = 24,
+            scale = 4
+    )
+    private BigDecimal waitAmount= BigDecimal.ZERO;
 
     @Column(name = "SUPPLIER")
     private String supplier;

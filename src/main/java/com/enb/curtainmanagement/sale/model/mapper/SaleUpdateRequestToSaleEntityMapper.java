@@ -14,20 +14,9 @@ public interface SaleUpdateRequestToSaleEntityMapper extends BaseMapper<SaleUpda
     @Named("mapForUpdating")
     default void mapForUpdating(SaleEntity saleEntityToBeUpdate, SaleUpdateRequest saleUpdateRequest) {
 
-        saleEntityToBeUpdate.setCustomerId(saleUpdateRequest.getCustomerId());
-        saleEntityToBeUpdate.setProductId(saleUpdateRequest.getProductId());
-        saleEntityToBeUpdate.setSubProductId(saleUpdateRequest.getSubProductId());
         saleEntityToBeUpdate.setAmount(saleUpdateRequest.getAmount());
         saleEntityToBeUpdate.setStatus(saleUpdateRequest.getStatus());
-        saleEntityToBeUpdate.setStack(saleUpdateRequest.getStack());
-        saleEntityToBeUpdate.setWeight(saleUpdateRequest.getWeight());
-        saleEntityToBeUpdate.setHeight(saleUpdateRequest.getHeight());
-        saleEntityToBeUpdate.setWaste(saleUpdateRequest.getWaste());
-        saleEntityToBeUpdate.setTotalPrice(saleUpdateRequest.getTotalPrice());
-        saleEntityToBeUpdate.setInstallment(saleUpdateRequest.getInstallment());
-        saleEntityToBeUpdate.setInstallmentQuantity(saleUpdateRequest.getInstallmentQuantity());
-        saleEntityToBeUpdate.setInstallmentToday(saleUpdateRequest.getInstallmentToday());
-        saleEntityToBeUpdate.setPaymentStatus(saleUpdateRequest.getPaymentStatus());
+
     }
 
     static SaleUpdateRequestToSaleEntityMapper initialize() {

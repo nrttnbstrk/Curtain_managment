@@ -6,7 +6,6 @@ import com.enb.curtainmanagement.subProduct.model.entity.SubProductEntity;
 import com.enb.curtainmanagement.subProduct.repository.SubProductRepository;
 import com.enb.curtainmanagement.product.model.entity.ProductEntity;
 import com.enb.curtainmanagement.product.repository.ProductRepository;
-import com.enb.curtainmanagement.sale.exception.SaleAlreadyExistException;
 import com.enb.curtainmanagement.sale.exception.SaleNotFoundException;
 import com.enb.curtainmanagement.sale.model.Sale;
 import com.enb.curtainmanagement.sale.model.dto.request.SaleUpdateRequest;
@@ -43,43 +42,80 @@ public class SaleUpdateServiceImpl implements SaleUpdateService {
                 .findById(saleId)
                 .orElseThrow(() -> new SaleNotFoundException("Belirtilen SATIS mevcut değil."));
 
+        String previousStatus = saleEntityToBeUpdate.getStatus();
         BigDecimal previousAmount = new BigDecimal(saleEntityToBeUpdate.getAmount());
+
+        String productId = saleEntityToBeUpdate.getProductId();
+        String subProductId = saleEntityToBeUpdate.getSubProductId();
 
         saleUpdateRequestToSaleEntityMapper.mapForUpdating(saleEntityToBeUpdate, saleUpdateRequest);
 
-        adjustProductAndSubProductAmounts(saleEntityToBeUpdate, previousAmount);
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Belirtilen ÜRÜN mevcut değil."));
+
+        SubProductEntity subProduct = subProductRepository.findById(subProductId)
+                .orElseThrow(() -> new RuntimeException("Belirtilen ALT ÜRÜN mevcut değil."));
+
+        if ("wait".equals(previousStatus) && "wait".equals(saleEntityToBeUpdate.getStatus())) {
+            adjustWaitAmountForWaitStatusChange(saleEntityToBeUpdate, previousAmount, subProduct);
+        } else if ("cut".equals(previousStatus) && "wait".equals(saleEntityToBeUpdate.getStatus())) {
+            adjustAmountsForCutToWait(saleEntityToBeUpdate, previousAmount, product, subProduct);
+        } else if (!"cut".equals(previousStatus) && "cut".equals(saleEntityToBeUpdate.getStatus())) {
+            adjustWaitAndTotalAmountForNonCutToCut(saleEntityToBeUpdate, product, subProduct);
+        } else if ("cut".equals(previousStatus) && "cut".equals(saleEntityToBeUpdate.getStatus())) {
+            adjustProductAndSubProductAmountsForCutStatusChange(saleEntityToBeUpdate, previousAmount, product, subProduct);
+        }
 
         SaleEntity updatedSaleEntity = saleRepository.save(saleEntityToBeUpdate);
 
         return saleEntityToSaleMapper.map(updatedSaleEntity);
     }
 
-    private void adjustProductAndSubProductAmounts(SaleEntity saleEntity, BigDecimal previousAmount) {
-        String productId = saleEntity.getProductId();
-        String subProductId = saleEntity.getSubProductId();
-
-        ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Belirtilen URUN mevcut değil."));
-
-        SubProductEntity subProduct = subProductRepository.findById(subProductId)
-                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil. "));
-        CustomerEntity customer = customerRepository.findById(saleEntity.getCustomerId())
-                .orElseThrow(() -> new SaleNotFoundException("Belirtilen MÜŞTERİ mevcut değil."));
-
+    private void adjustWaitAmountForWaitStatusChange(SaleEntity saleEntity, BigDecimal previousAmount, SubProductEntity subProduct) {
         BigDecimal newAmount = new BigDecimal(saleEntity.getAmount());
-
         BigDecimal difference = newAmount.subtract(previousAmount);
 
-        product.setTotalAmount(product.getTotalAmount().add(difference));
-        subProduct.setAmount(subProduct.getAmount().subtract(difference));
+        if (difference.compareTo(BigDecimal.ZERO) > 0) {
+            subProduct.setWaitAmount(subProduct.getWaitAmount().add(difference));
+        } else if (difference.compareTo(BigDecimal.ZERO) < 0) {
+            subProduct.setWaitAmount(subProduct.getWaitAmount().subtract(difference.abs()));
+        }
+
+        subProductRepository.save(subProduct);
+    }
+
+    private void adjustAmountsForCutToWait(SaleEntity saleEntity, BigDecimal previousAmount, ProductEntity product, SubProductEntity subProduct) {
+        subProduct.setWaitAmount(subProduct.getWaitAmount().add(previousAmount));
+        product.setTotalAmount(product.getTotalAmount().add(previousAmount));
 
         productRepository.save(product);
         subProductRepository.save(subProduct);
     }
 
-    private void checkCustomerIdNumberUniqueness(final String saleId) {
-        if (saleRepository.existsSaleEntityById(saleId)) {
-            throw new SaleAlreadyExistException("Verilen ürün Id ile = " + saleId);
-        }
+    private void adjustWaitAndTotalAmountForNonCutToCut(SaleEntity saleEntity, ProductEntity product, SubProductEntity subProduct) {
+        BigDecimal newAmount = new BigDecimal(saleEntity.getAmount());
+
+        subProduct.setWaitAmount(subProduct.getWaitAmount().subtract(newAmount));
+        product.setTotalAmount(product.getTotalAmount().subtract(newAmount));
+
+        subProductRepository.save(subProduct);
+        productRepository.save(product);
     }
+
+    private void adjustProductAndSubProductAmountsForCutStatusChange(SaleEntity saleEntity, BigDecimal previousAmount, ProductEntity product, SubProductEntity subProduct) {
+        BigDecimal newAmount = new BigDecimal(saleEntity.getAmount());
+        BigDecimal difference = newAmount.subtract(previousAmount);
+
+        if (difference.compareTo(BigDecimal.ZERO) > 0) {
+            product.setTotalAmount(product.getTotalAmount().subtract(difference));
+            subProduct.setAmount(subProduct.getAmount().subtract(difference));
+        } else if (difference.compareTo(BigDecimal.ZERO) < 0) {
+            product.setTotalAmount(product.getTotalAmount().add(difference.abs()));
+            subProduct.setAmount(subProduct.getAmount().add(difference.abs()));
+        }
+
+        productRepository.save(product);
+        subProductRepository.save(subProduct);
+    }
+
 }

@@ -49,7 +49,7 @@ public class ProductEntity extends BaseEntity {
             precision = 24,
             scale = 4
     )
-    private BigDecimal totalAmount;
+    private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Column(
             name = "PURCHASE_PRICE",

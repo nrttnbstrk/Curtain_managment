@@ -4,6 +4,7 @@ import com.enb.curtainmanagement.product.model.entity.ProductEntity;
 import com.enb.curtainmanagement.product.repository.ProductRepository;
 import com.enb.curtainmanagement.sale.repository.SaleRepository;
 import com.enb.curtainmanagement.subProduct.exception.SubProductAlreadyExistException;
+import com.enb.curtainmanagement.subProduct.exception.SubProductNotFoundException;
 import com.enb.curtainmanagement.subProduct.model.SubProduct;
 import com.enb.curtainmanagement.subProduct.model.dto.request.SubProductCreateRequest;
 import com.enb.curtainmanagement.subProduct.model.entity.SubProductEntity;
@@ -34,14 +35,24 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
     @Transactional
     public SubProduct createProduct(SubProductCreateRequest subProductCreateRequest) {
 
+        // Benzersiz ürün adını kontrol et
         checkUniquenessProductName(subProductCreateRequest.getBarcode());
 
+        // Request'i Entity'e dönüştür
         final SubProductEntity subProductEntityToBeSave = subProductCreateRequestToSubProductEntityMapper.mapForSaving(subProductCreateRequest);
 
+        // waitAmount alanı için varsayılan 0 değeri atanması
+        if (subProductEntityToBeSave.getWaitAmount() == null) {
+            subProductEntityToBeSave.setWaitAmount(BigDecimal.ZERO);
+        }
+
+        // Ürünü kaydet
         SubProductEntity savedSubProductEntity = subProductRepository.save(subProductEntityToBeSave);
 
+        // Ürün toplam tutarını güncelle
         updateProductTotalAmount(savedSubProductEntity.getProductId(), savedSubProductEntity.getAmount());
 
+        // Entity'i model'e dönüştür ve geri döndür
         return subProductEntityToSubProductMapper.map(savedSubProductEntity);
     }
 
@@ -53,7 +64,7 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
 
     private void updateProductTotalAmount(String productId, BigDecimal amountToAdd) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Belirtilen ALT URUN mevcut değil."));
+                .orElseThrow(() -> new SubProductNotFoundException("Belirtilen URUN mevcut değil."));
 
         product.setTotalAmount(product.getTotalAmount().add(amountToAdd));
         productRepository.save(product);

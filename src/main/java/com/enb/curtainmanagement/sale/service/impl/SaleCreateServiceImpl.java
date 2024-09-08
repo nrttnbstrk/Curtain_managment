@@ -44,23 +44,17 @@ public class SaleCreateServiceImpl implements SaleCreateService {
     @Override
     @Transactional
     public Sale createSale(SaleCreateRequest saleCreateRequest) {
-        // Convert request to entity for saving
         final SaleEntity saleEntityToBeSave = saleCreateRequestToSaleEntityMapper.mapForSaving(saleCreateRequest);
 
-        // Calculate saleAmount
         BigDecimal weight = new BigDecimal(saleEntityToBeSave.getWeight());
         BigDecimal stack = new BigDecimal(saleEntityToBeSave.getStack());
         BigDecimal waste = new BigDecimal(saleEntityToBeSave.getWaste());
         BigDecimal saleAmount = weight.multiply(stack).add(waste);
         saleEntityToBeSave.setAmount(String.valueOf(saleAmount));
 
-        // Save the sale entity
         SaleEntity savedSaleEntity = saleRepository.save(saleEntityToBeSave);
-
-        // Update product and sub-product amounts
         updateProductAndSubProductAmounts(savedSaleEntity);
 
-        // Eğer installment true ise taksitleri oluştur
         if (Boolean.parseBoolean(saleCreateRequest.getInstallment())) {
             createInstallments(savedSaleEntity, saleCreateRequest.getTotalPrice(),
                     saleCreateRequest.getInstallmentQuantity(),
@@ -70,22 +64,18 @@ public class SaleCreateServiceImpl implements SaleCreateService {
         return saleEntityToSaleMapper.map(savedSaleEntity);
     }
 
+
     private void createInstallments(SaleEntity saleEntity, String totalPrice, String installmentQuantity, boolean installmentToday) {
-        // Total price ve installment quantity BigDecimal'a çevriliyor
         BigDecimal totalPriceValue = new BigDecimal(totalPrice);
         int installmentCount = Integer.parseInt(installmentQuantity);
 
-        // Her taksit için fiyat hesaplama
         BigDecimal installmentAmount = totalPriceValue.divide(new BigDecimal(installmentCount), RoundingMode.HALF_UP);
 
-        // İşlemin yapıldığı anı almak için LocalDateTime.now() kullanıyoruz
         LocalDateTime createdDate = LocalDateTime.now();
 
         for (int i = 1; i <= installmentCount; i++) {
-            // Installment kaydını oluştur
             InstallmentCreateRequest installmentCreateRequest = new InstallmentCreateRequest();
 
-            // SaleEntity'den InstallmentCreateRequest alanlarının doldurulması
             installmentCreateRequest.setCustomerId(saleEntity.getCustomerId()); // Customer Id
             installmentCreateRequest.setSaleId(saleEntity.getId()); // Sale Id
             installmentCreateRequest.setInstallmentPrice(installmentAmount); // Taksit fiyatı
@@ -94,17 +84,15 @@ public class SaleCreateServiceImpl implements SaleCreateService {
             installmentCreateRequest.setTotalPrice(totalPriceValue); // Toplam fiyat
             installmentCreateRequest.setInstallmentQuantity(installmentCount); // Taksit sayısı
 
-            // createdDate için
+
             installmentCreateRequest.setCreatedDate(createdDate.toLocalDate()); // İşlemin yapıldığı an (CREATED_DATE)
 
-            // installmentDate için - Eğer installmentToday true ise bugünden başlar, false ise 1 ay sonra başlar
             if (installmentToday) {
                 installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i - 1)); // Bugünden başlıyor
             } else {
                 installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i)); // 1 ay sonra başlıyor
             }
 
-            // Installment kaydını InstallmentCreateService aracılığıyla oluştur
             installmentCreateService.createInstallment(installmentCreateRequest);
         }
     }
@@ -125,25 +113,27 @@ public class SaleCreateServiceImpl implements SaleCreateService {
         CustomerEntity customer = customerRepository.findById(saleEntity.getCustomerId())
                 .orElseThrow(() -> new SaleNotFoundException("Belirtilen MÜŞTERİ mevcut değil."));
 
-        // Convert weight, stack, and waste from String to BigDecimal
         BigDecimal weight = new BigDecimal(saleEntity.getWeight());
         BigDecimal stack = new BigDecimal(saleEntity.getStack());
         BigDecimal waste = new BigDecimal(saleEntity.getWaste());
 
-        // Calculate saleAmount as (weight * stack) + waste
         BigDecimal saleAmount = weight.multiply(stack).add(waste);
 
-        // Check if the subProduct has enough amount to fulfill the sale
-        if (subProduct.getAmount().compareTo(saleAmount) < 0) {
-            throw new InsufficientAmountException("Bu üründe yeterli miktar yok");
+        if ("cut".equals(saleEntity.getStatus())) {
+            if (subProduct.getAmount().compareTo(saleAmount) < 0) {
+                throw new InsufficientAmountException("Bu üründe yeterli miktar yok");
+            }
+
+            product.setTotalAmount(product.getTotalAmount().subtract(saleAmount));
+            subProduct.setAmount(subProduct.getAmount().subtract(saleAmount));
+
+
+            productRepository.save(product);
+            subProductRepository.save(subProduct);
+        } else {
+            subProduct.setWaitAmount(subProduct.getWaitAmount().add(saleAmount));
+            subProductRepository.save(subProduct);
         }
-
-        // Update product and subProduct amounts
-        product.setTotalAmount(product.getTotalAmount().subtract(saleAmount));
-        subProduct.setAmount(subProduct.getAmount().subtract(saleAmount));
-
-        // Save updated product and subProduct entities
-        productRepository.save(product);
-        subProductRepository.save(subProduct);
     }
+
 }
