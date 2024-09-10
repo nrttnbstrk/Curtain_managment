@@ -76,21 +76,21 @@ public class SaleCreateServiceImpl implements SaleCreateService {
         for (int i = 1; i <= installmentCount; i++) {
             InstallmentCreateRequest installmentCreateRequest = new InstallmentCreateRequest();
 
-            installmentCreateRequest.setCustomerId(saleEntity.getCustomerId()); // Customer Id
-            installmentCreateRequest.setSaleId(saleEntity.getId()); // Sale Id
-            installmentCreateRequest.setInstallmentPrice(installmentAmount); // Taksit fiyatı
-            installmentCreateRequest.setInstallmentWhich(String.valueOf(i)); // Taksit numarası (kaçıncı taksit)
-            installmentCreateRequest.setStatus("BEKLIYOR"); // Varsayılan taksit durumu
-            installmentCreateRequest.setTotalPrice(totalPriceValue); // Toplam fiyat
-            installmentCreateRequest.setInstallmentQuantity(installmentCount); // Taksit sayısı
+            installmentCreateRequest.setCustomerId(saleEntity.getCustomerId());
+            installmentCreateRequest.setSaleId(saleEntity.getId());
+            installmentCreateRequest.setInstallmentPrice(installmentAmount);
+            installmentCreateRequest.setInstallmentWhich(String.valueOf(i));
+            installmentCreateRequest.setStatus("BEKLIYOR");
+            installmentCreateRequest.setTotalPrice(totalPriceValue);
+            installmentCreateRequest.setInstallmentQuantity(installmentCount);
 
 
-            installmentCreateRequest.setCreatedDate(createdDate.toLocalDate()); // İşlemin yapıldığı an (CREATED_DATE)
+            installmentCreateRequest.setCreatedDate(createdDate.toLocalDate());
 
             if (installmentToday) {
-                installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i - 1)); // Bugünden başlıyor
+                installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i - 1));
             } else {
-                installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i)); // 1 ay sonra başlıyor
+                installmentCreateRequest.setInstallmentDate(createdDate.toLocalDate().plusMonths(i));
             }
 
             installmentCreateService.createInstallment(installmentCreateRequest);

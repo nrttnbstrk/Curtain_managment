@@ -14,8 +14,11 @@ import java.math.BigDecimal;
 @Builder
 public class SubProductCreateRequest {
 
-    @NotBlank(message = "Ürün barcode boş olamaz.")
+
+
     private String barcode;
+
+    private Boolean autoBarcode;
 
     @NotNull(message = "Miktar Bos Olamaz")
     @DecimalMin(value = "0.0", inclusive = false, message = "Miktar 0'dan Kucuk Olamaz")

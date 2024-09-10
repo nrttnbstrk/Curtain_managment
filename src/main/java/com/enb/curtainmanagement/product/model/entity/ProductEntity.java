@@ -36,8 +36,13 @@ public class ProductEntity extends BaseEntity {
 
     @Column(name = "BRAND")
     private String brand;
+
+    @Column(name="AUTO_BARCODE")
+    private Boolean autoBarcode;
+
     @Column(name = "CODE")
     private String code;
+
     @Column(name = "BARCODE")
     private String barcode;
 

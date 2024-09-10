@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class SubProductResponse {
     private String id;
     private String barcode;
+    private Boolean autoBarcode;
     private String productId;
     private BigDecimal amount;
     private String supplier;

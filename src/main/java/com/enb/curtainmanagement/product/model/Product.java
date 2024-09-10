@@ -24,6 +24,7 @@ public class Product extends BaseDomainModel {
     private String brand;
     private String code;
     private String barcode;
+    private Boolean autoBarcode;
     private String unitType;
     private BigDecimal totalAmount;
     private BigDecimal purchasePrice;

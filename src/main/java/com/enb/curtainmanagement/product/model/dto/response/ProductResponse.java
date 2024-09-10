@@ -18,6 +18,7 @@ public class ProductResponse {
     private String name;
     private String brand;
     private String code;
+    private Boolean autoBarcode;
     private String barcode;
     private String unitType;
     private BigDecimal totalAmount;

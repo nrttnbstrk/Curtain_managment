@@ -34,6 +34,9 @@ public class SubProductEntity extends BaseEntity {
     @Column(name = "PRODUCT_ID")
     private String productId;
 
+    @Column(name = "AUTO_BARCODE")
+    private Boolean autoBarcode;
+
     @Column(name = "BARCODE")
     private String barcode;
 

@@ -15,6 +15,7 @@ public interface SubProductCreateRequestToSubProductEntityMapper extends BaseMap
         return SubProductEntity.builder()
                 .productId(subProductCreateRequest.getProductId())
                 .barcode(subProductCreateRequest.getBarcode())
+                .autoBarcode(subProductCreateRequest.getAutoBarcode())
                 .amount(subProductCreateRequest.getAmount())
                 .supplier(subProductCreateRequest.getSupplier())
                 .build();

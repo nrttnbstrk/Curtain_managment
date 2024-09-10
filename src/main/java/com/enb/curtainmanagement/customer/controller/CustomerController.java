@@ -53,7 +53,7 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public CustomResponse<CustomerResponse> getProductById(@PathVariable @UUID final String customerId) {
+    public CustomResponse<CustomerResponse> getCustomerById(@PathVariable @UUID final String customerId) {
 
         final Customer customer = customerReadService.getCustomerById(customerId);
 
@@ -91,7 +91,7 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public CustomResponse<Void> deleteProductById(@PathVariable @UUID final String customerId) {
+    public CustomResponse<Void> deleteCustomerById(@PathVariable @UUID final String customerId) {
 
         customerDeleteService.deleteCustomerById(customerId);
         return CustomResponse.SUCCESS;

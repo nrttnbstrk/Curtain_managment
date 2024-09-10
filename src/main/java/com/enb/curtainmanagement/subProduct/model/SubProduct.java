@@ -21,6 +21,7 @@ public class SubProduct extends BaseDomainModel {
 
     private String id;
     private String productId;
+    private Boolean autoBarcode;
     private String barcode;
     private BigDecimal amount;
     private String supplier;

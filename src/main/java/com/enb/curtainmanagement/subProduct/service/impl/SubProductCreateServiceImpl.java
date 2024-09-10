@@ -17,14 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-
 @Service
 @RequiredArgsConstructor
 public class SubProductCreateServiceImpl implements SubProductCreateService {
 
     private final SubProductRepository subProductRepository;
     private final ProductRepository productRepository;
-    private final SaleRepository saleRepository;
 
     private final SubProductCreateRequestToSubProductEntityMapper subProductCreateRequestToSubProductEntityMapper =
             SubProductCreateRequestToSubProductEntityMapper.initialize();
@@ -35,24 +33,24 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
     @Transactional
     public SubProduct createProduct(SubProductCreateRequest subProductCreateRequest) {
 
-        // Benzersiz ürün adını kontrol et
-        checkUniquenessProductName(subProductCreateRequest.getBarcode());
+        // Otomatik barkod oluşturma işlemi
+        if (subProductCreateRequest.getAutoBarcode() && subProductCreateRequest.getBarcode().isEmpty()) {
+            String generatedBarcode = generateUniqueBarcode();
+            subProductCreateRequest.setBarcode(generatedBarcode);
+        } else {
+            checkUniquenessProductName(subProductCreateRequest.getBarcode());
+        }
 
-        // Request'i Entity'e dönüştür
         final SubProductEntity subProductEntityToBeSave = subProductCreateRequestToSubProductEntityMapper.mapForSaving(subProductCreateRequest);
 
-        // waitAmount alanı için varsayılan 0 değeri atanması
         if (subProductEntityToBeSave.getWaitAmount() == null) {
             subProductEntityToBeSave.setWaitAmount(BigDecimal.ZERO);
         }
 
-        // Ürünü kaydet
         SubProductEntity savedSubProductEntity = subProductRepository.save(subProductEntityToBeSave);
 
-        // Ürün toplam tutarını güncelle
         updateProductTotalAmount(savedSubProductEntity.getProductId(), savedSubProductEntity.getAmount());
 
-        // Entity'i model'e dönüştür ve geri döndür
         return subProductEntityToSubProductMapper.map(savedSubProductEntity);
     }
 
@@ -68,5 +66,13 @@ public class SubProductCreateServiceImpl implements SubProductCreateService {
 
         product.setTotalAmount(product.getTotalAmount().add(amountToAdd));
         productRepository.save(product);
+    }
+
+    private String generateUniqueBarcode() {
+        String barcode;
+        do {
+            barcode = String.valueOf(System.currentTimeMillis()); // Basit bir benzersiz barkod üretme mantığı
+        } while (subProductRepository.existsProductEntityByBarcode(barcode)); // Benzersizliği kontrol et
+        return barcode;
     }
 }

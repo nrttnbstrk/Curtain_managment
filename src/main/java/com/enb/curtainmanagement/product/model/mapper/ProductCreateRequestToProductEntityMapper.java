@@ -21,6 +21,7 @@ public interface ProductCreateRequestToProductEntityMapper extends BaseMapper<Pr
                 .purchasePrice(productCreateRequest.getPurchasePrice())
                 .sellingPrice(productCreateRequest.getSellingPrice())
                 .supplier(productCreateRequest.getSupplier())
+                .autoBarcode(productCreateRequest.getAutoBarcode())
                 .build();
     }
 

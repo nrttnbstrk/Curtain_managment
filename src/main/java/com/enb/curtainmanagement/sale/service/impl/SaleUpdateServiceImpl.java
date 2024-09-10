@@ -1,6 +1,5 @@
 package com.enb.curtainmanagement.sale.service.impl;
 
-import com.enb.curtainmanagement.customer.model.entity.CustomerEntity;
 import com.enb.curtainmanagement.customer.repository.CustomerRepository;
 import com.enb.curtainmanagement.subProduct.model.entity.SubProductEntity;
 import com.enb.curtainmanagement.subProduct.repository.SubProductRepository;
@@ -27,7 +26,7 @@ public class SaleUpdateServiceImpl implements SaleUpdateService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
     private final SubProductRepository subProductRepository;
-    private final CustomerRepository customerRepository;
+    //private final CustomerRepository customerRepository;
     private final SaleUpdateRequestToSaleEntityMapper saleUpdateRequestToSaleEntityMapper =
             SaleUpdateRequestToSaleEntityMapper.initialize();
 

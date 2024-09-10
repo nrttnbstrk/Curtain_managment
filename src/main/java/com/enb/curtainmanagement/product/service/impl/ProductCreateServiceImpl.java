@@ -27,40 +27,53 @@ public class ProductCreateServiceImpl implements ProductCreateService {
     @Override
     public Product createProduct(ProductCreateRequest productCreateRequest) {
 
-        // Benzersiz ürün adı, barkod ve kod kontrolleri
         checkUniquenessProductName(productCreateRequest.getName());
-        checkUniquenessProductBarcode(productCreateRequest.getBarcode());
         checkUniquenessProductCode(productCreateRequest.getCode());
 
-        // Request'i Entity'e dönüştürme
+        // Otomatik barkod oluşturma işlemi
+        if (productCreateRequest.getAutoBarcode() && productCreateRequest.getBarcode().isEmpty()) {
+            String generatedBarcode = generateUniqueBarcode();
+            productCreateRequest.setBarcode(generatedBarcode);
+        } else {
+            checkUniquenessProductBarcode(productCreateRequest.getBarcode());
+        }
+
         final ProductEntity productEntityToBeSave = productCreateRequestToProductEntityMapper.mapForSaving(productCreateRequest);
 
-        // TotalAmount alanı için varsayılan 0 değeri atanması
         if (productEntityToBeSave.getTotalAmount() == null) {
             productEntityToBeSave.setTotalAmount(BigDecimal.ZERO);
         }
 
-        // Ürünü kaydetme
         ProductEntity savedProductEntity = productRepository.save(productEntityToBeSave);
 
-        // Entity'i model'e dönüştürme ve geri döndürme
         return productEntityToProductMapper.map(savedProductEntity);
     }
 
+    private String generateUniqueBarcode() {
+        String barcode;
+        do {
+            barcode = String.valueOf(System.currentTimeMillis()); // Basit bir benzersiz barkod üretme mantığı
+        } while (productRepository.existsProductEntityByBarcode(barcode)); // Benzersizliği kontrol et
+        return barcode;
+    }
 
     private void checkUniquenessProductName(final String productName) {
         if (productRepository.existsProductEntityByName(productName)) {
             throw new ProductAlreadyExistException("Bu isim ile başka bir ürün kayıtlı");
         }
     }
+
     private void checkUniquenessProductBarcode(final String barcode) {
         if (productRepository.existsProductEntityByBarcode(barcode)) {
             throw new ProductAlreadyExistException("Bu barkod ile başka bir ürün kayıtlı");
         }
     }
+
     private void checkUniquenessProductCode(final String code) {
         if (productRepository.existsProductEntityByCode(code)) {
             throw new ProductAlreadyExistException("Bu Urun Kodu ile başka bir ürün kayıtlı");
         }
     }
 }
+
+

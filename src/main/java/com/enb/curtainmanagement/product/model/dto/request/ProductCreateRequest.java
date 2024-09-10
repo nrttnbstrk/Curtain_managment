@@ -23,6 +23,8 @@ public class ProductCreateRequest {
 
     private String code;
 
+    private Boolean  autoBarcode;
+
     private String barcode;
 
     @NotBlank(message = "Birim tipi boş olamaz.")
